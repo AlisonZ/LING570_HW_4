@@ -1,9 +1,8 @@
 import sys
 
-STATE_DICT = {}
-
 def create_token_map(line):
     split_line = line.split(" ")
+    state_dict = {}
 
     for i, token in enumerate(split_line):
         if i > 0:
@@ -16,20 +15,23 @@ def create_token_map(line):
             else:
                 bigram_second = split_line[i].split("/")
                 bigram_pos = f"{bigram_first[1]} {bigram_second[1]}"
-            if bigram_pos in STATE_DICT:
-                STATE_DICT[bigram_pos] +=1
+            if bigram_pos in state_dict:
+                state_dict[bigram_pos] +=1
             else: 
-                STATE_DICT[bigram_pos] = 1
+                state_dict[bigram_pos] = 1
+    sorted_dict = sorted(state_dict.items(), key=lambda item:item[0])
+    return sorted_dict
 
 def read_input():
     lines = sys.stdin.readlines()
     for line in lines:
         EOS_line = line.rstrip() + '</s>'
-        create_token_map(EOS_line)
+        bigram_token_map = create_token_map(EOS_line)
+    return bigram_token_map
 
 def main():
-    read_input()
+    bigram_token_map = read_input()
+    print(f"BIGGGG", bigram_token_map)
 
-    print(f"STATE {STATE_DICT}")
 
 main()
