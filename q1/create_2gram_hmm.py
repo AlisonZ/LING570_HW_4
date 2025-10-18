@@ -1,20 +1,25 @@
 import sys
 STATE_DICT = {}
 
-def get_transitions(bigram_state_dict):
-    current_w1 =''
-    state_nums = 0
-    for key, value in bigram_state_dict.items():
-        split_token = key.split(" ")
-        token_w1 = split_token[0]
-        if token_w1 == current_w1:
-            print(f"SAME {token_w1}")
-        else:
-            print(f"new w1 {token_w1}")
-            state_nums +=1
-            current_w1 = token_w1
+def get_total(transition_dict):
+    total = 0
+    for k, v in transition_dict.items():
+        count = v['count']
+        total += count
+    return total
+    
 
-    return state_nums
+def get_transitions():
+    for key, value in STATE_DICT.items():
+        transitions = STATE_DICT[key]
+        total_sum = get_total(transitions)
+        # print(f"KEY:::{key}")
+
+        for k, v in transitions.items():
+            prob = v['count'] / total_sum
+            STATE_DICT[key][k]['prob'] = prob
+            # print(f"XXX {}")
+
 
 def create_state_dict(line):
     split_line = line.split(" ")
@@ -33,11 +38,11 @@ def create_state_dict(line):
 
         if POS_1 in STATE_DICT:
             if POS_2 in STATE_DICT[POS_1]:
-                STATE_DICT[POS_1][POS_2] +=1
+                STATE_DICT[POS_1][POS_2]['count'] +=1
             else:
-                STATE_DICT[POS_1].update({POS_2: 1})
+                STATE_DICT[POS_1].update({POS_2: {'count':1, 'prob': 'null'}})
         else:
-            new_entry = {POS_1: {POS_2: 1}}
+            new_entry = {POS_1: {POS_2: {'count':1, 'prob': 'null'}}}
             STATE_DICT.update(new_entry)
 
 def read_input():
@@ -48,7 +53,7 @@ def read_input():
 
 def main():
     read_input()
-    # state_nums = get_transitions(bigram_token_dict)
+    get_transitions()
 
     print(f"BIGGGG {STATE_DICT}")
 
