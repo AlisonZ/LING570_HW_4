@@ -9,15 +9,16 @@ def get_total(transition_dict):
         total += count
     return total
 
-def print_transitions():
-    print("\\ transition")
-    for key, value in STATE_DICT.items():
-        w_1 = key
-        transitions = value
-        for k, v in transitions.items():
-            w_2 = k 
-            prob = v['prob']
-            print(f"{w_1}  {w_2}   {prob}")
+def print_transitions(output_file):
+    with open(output_file, "a") as file:
+        print("\\ transition", file=file)
+        for key, value in STATE_DICT.items():
+            w_1 = key
+            transitions = value
+            for k, v in transitions.items():
+                w_2 = k 
+                prob = v['prob']
+                print(f"{w_1}  {w_2}   {prob}", file=file)
 
 def get_emissions():
     for k, v in POS_DICT.items():
@@ -69,15 +70,18 @@ def create_state_dict(line):
             STATE_DICT.update(new_entry)
 
 def read_input():
+    output_file = sys.argv[1]
     lines = sys.stdin.readlines()
     for line in lines:
         EOS_line = line.rstrip() + '</s>'
         create_state_dict(EOS_line)
 
+    return output_file
+
 def main():
-    read_input()
+    output_file=read_input()
     get_transitions()
     # get_emissions()
-    print_transitions()
+    print_transitions(output_file)
 
 main()
