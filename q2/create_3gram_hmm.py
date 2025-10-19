@@ -1,9 +1,9 @@
 
 STATE_DICT = {}
+POS_DICT = {}
 
 def get_state_probs():
     for key, bigram_map in STATE_DICT.items():
-        # print(f"bigram", bigram_map)
         total_count = 0
         for v in bigram_map.values():
             total_count += int(v['count'])
@@ -14,13 +14,28 @@ def get_state_probs():
             STATE_DICT[key][bigram]['prob'] = prob
 
 def create_emissions_dict(token):
-    print("hiiii")
+    if token == "</s>":
+        word = "</s>"
+        POS = "EOS"
+    else:
+        split_token = token.split("/")
+        word = split_token[0]
+        POS = split_token[1]
+    
+    if POS in POS_DICT:
+        if word in POS_DICT[POS]:
+            POS_DICT[POS][word] +=1
+        else:
+            POS_DICT[POS].update( {word: 1})
+    else:
+        POS_DICT[POS] = {word: 1}
 
 def create_state_dict(line):
     line.rstrip()
     split_line = line.rstrip().split(" ")
     split_line.append("</s>")
     for i, token in enumerate(split_line):
+        create_emissions_dict(token)
         if i < len(split_line) - 2:
             w1_tag = split_line[i]
             w2_tag = split_line[i+1]
@@ -60,5 +75,6 @@ def get_input():
 def main():
     output_file = get_input()
     get_state_probs()
-    print(f"STATE {STATE_DICT}")
+    # print(f"STATE {STATE_DICT}")
+    print(f"POSSSS {POS_DICT}")
 main()
