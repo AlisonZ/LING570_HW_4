@@ -10,10 +10,9 @@ def print_transmission_results():
 
 def print_emission_results():
     print(f"\\ emissions")
-    for pos_token, values in POS_DICT.items():
-        # print(f"{pos_token} {values}")
-        for item in values:
-            print(f"ITEMMM {item}")
+    for pos_token, token_map in POS_DICT.items():
+        for token, values in token_map.items():
+            print(f"{pos_token} {token} {values['prob']}")
 
 def get_state_probs():
     for key, bigram_map in STATE_DICT.items():
@@ -103,5 +102,5 @@ def main():
     # print_transmission_results()
     print_emission_results()
     # print(f"STATE {STATE_DICT}")
-    print(f"POSSSS {POS_DICT}")
+    # print(f"POSSSS {POS_DICT}")
 main()
