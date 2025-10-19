@@ -9,6 +9,16 @@ def get_total(transition_dict):
         total += count
     return total
 
+def print_transitions():
+    print("\\ transition")
+    for key, value in STATE_DICT.items():
+        w_1 = key
+        transitions = value
+        for k, v in transitions.items():
+            w_2 = k 
+            prob = v['prob']
+            print(f"{w_1}  {w_2}   {prob}")
+
 def get_emissions():
     for k, v in POS_DICT.items():
         print(f"key: {k} value: {v}")
@@ -67,5 +77,7 @@ def read_input():
 def main():
     read_input()
     get_transitions()
-    get_emissions()
+    # get_emissions()
+    print_transitions()
+
 main()
