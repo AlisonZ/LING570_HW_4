@@ -1,3 +1,12 @@
+state_num=13
+sym_num=26
+init_line_num=1
+trans_line_num=26
+emiss_line_num=26
+
+\ init
+BOS 1.0
+
 \ emissions
 ,   ,   1.0
 .   .   1.0
@@ -25,3 +34,32 @@ NNS   years   1.0
 VB   join   1.0
 VBG   publishing   1.0
 VBZ   is   1.0
+
+\ transition
+NNP  NNP   0.375
+NNP  ,   0.25
+NNP  CD   0.125
+NNP  VBZ   0.125
+NNP  VBG   0.125
+,  CD   0.3333333333333333
+,  MD   0.3333333333333333
+,  DT   0.3333333333333333
+CD  NNS   0.5
+CD  </s>   0.5
+NNS  JJ   1.0
+JJ  ,   0.5
+JJ  NN   0.5
+MD  VB   1.0
+VB  DT   1.0
+DT  NN   0.3333333333333333
+DT  JJ   0.3333333333333333
+DT  NNP   0.3333333333333333
+NN  IN   0.5
+NN  NNP   0.25
+NN  </s>   0.25
+IN  DT   0.5
+IN  NNP   0.5
+.  </s>   1.0
+VBZ  NN   1.0
+VBG  NN   1.0
+

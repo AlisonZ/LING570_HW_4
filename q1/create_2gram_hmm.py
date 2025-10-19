@@ -1,6 +1,29 @@
 import sys
 STATE_DICT = {}
 POS_DICT = {}
+INIT_DICT = {}
+
+def print_meta_data(output_file):
+    state_num = len(POS_DICT)
+    sym_num = 0
+    for k, v in POS_DICT.items():
+        sym_num +=len(v)
+
+    trans_line_num = 0
+    for k, v in STATE_DICT.items():
+        trans_line_num += len(v)
+
+    emiss_line_num = 0
+    for k, v in POS_DICT.items():
+        emiss_line_num += len(v)
+    with open(output_file, 'a') as file:
+        print(f"state_num={state_num}", file=file)
+        print(f"sym_num={sym_num}", file=file)
+        print(f"init_line_num={len(INIT_DICT)}", file=file)
+        print(f"trans_line_num={trans_line_num}", file=file)
+        print(f"emiss_line_num={emiss_line_num}", file=file)
+        print(file=file)
+
 
 def get_total(transition_dict):
     total = 0
@@ -8,6 +31,14 @@ def get_total(transition_dict):
         count = v['count']
         total += count
     return total
+
+# TODO: print correctly when dynamic data
+def print_init(output_file):
+    with open(output_file, 'a') as file:
+        print('\\ init', file=file)
+        for k, v in INIT_DICT.items():
+            print(f"{k} 1.0", file=file)
+        print(file=file)
 
 def print_transitions(output_file):
     with open(output_file, "a") as file:
@@ -19,11 +50,12 @@ def print_transitions(output_file):
                 w_2 = k 
                 prob = v['prob']
                 print(f"{w_1}  {w_2}   {prob}", file=file)
+        print(file=file)
 
 def print_emissions(output_file):
     sorted_dict = dict(sorted(POS_DICT.items()))
     with open(output_file, 'a') as file:
-        print("\\ emissions", file=file)
+        print("\\ emission", file=file)
         for k, v in sorted_dict.items():
             POS = k
             emissions = v
@@ -31,6 +63,11 @@ def print_emissions(output_file):
             for key, value in emissions.items():
                 prob = int(value) / int(total_count)
                 print(f"{POS}   {key}   {prob}", file=file)
+        print(file=file)
+
+def get_init():
+    # TODO: find how to measure
+    INIT_DICT['BOS'] = 1
 
 def get_transitions():
     for key, value in STATE_DICT.items():
@@ -89,7 +126,11 @@ def read_input():
 def main():
     output_file=read_input()
     get_transitions()
+    get_init()
+
+    print_meta_data(output_file)
+    print_init(output_file)
+    print_transitions(output_file)
     print_emissions(output_file)
-    # print_transitions(output_file)
 
 main()
