@@ -2,6 +2,12 @@
 STATE_DICT = {}
 POS_DICT = {}
 
+def print_transmission_results():
+    print(f"\\ transmission")
+    for w1, bigram_map in STATE_DICT.items():
+        for bigram, value in bigram_map.items():
+            print(f"{w1}    {bigram}    {value['prob']}")
+
 def get_state_probs():
     for key, bigram_map in STATE_DICT.items():
         total_count = 0
@@ -75,6 +81,7 @@ def get_input():
 def main():
     output_file = get_input()
     get_state_probs()
+    print_transmission_results()
     # print(f"STATE {STATE_DICT}")
-    print(f"POSSSS {POS_DICT}")
+    # print(f"POSSSS {POS_DICT}")
 main()
