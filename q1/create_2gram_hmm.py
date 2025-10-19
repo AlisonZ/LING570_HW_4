@@ -20,15 +20,17 @@ def print_transitions(output_file):
                 prob = v['prob']
                 print(f"{w_1}  {w_2}   {prob}", file=file)
 
-def print_emissions():
-    print(POS_DICT)
-    for k, v in POS_DICT.items():
-        POS = k
-        emissions = v
-        total_count = sum(emissions.values())
-        for key, value in emissions.items():
-            prob = int(value) / int(total_count)
-            print(f"{POS}   {key}   {prob}")
+def print_emissions(output_file):
+    sorted_dict = dict(sorted(POS_DICT.items()))
+    with open(output_file, 'a') as file:
+        print("\\ emissions", file=file)
+        for k, v in sorted_dict.items():
+            POS = k
+            emissions = v
+            total_count = sum(emissions.values())
+            for key, value in emissions.items():
+                prob = int(value) / int(total_count)
+                print(f"{POS}   {key}   {prob}", file=file)
 
 def get_transitions():
     for key, value in STATE_DICT.items():
@@ -87,7 +89,7 @@ def read_input():
 def main():
     output_file=read_input()
     get_transitions()
-    print_emissions()
+    print_emissions(output_file)
     # print_transitions(output_file)
 
 main()
