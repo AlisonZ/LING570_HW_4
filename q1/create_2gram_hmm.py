@@ -1,4 +1,6 @@
 import sys
+import os
+
 STATE_DICT = {}
 POS_DICT = {}
 INIT_DICT = {}
@@ -116,6 +118,9 @@ def create_state_dict(line):
 
 def read_input():
     output_file = sys.argv[1]
+    if os.path.exists(f'./{output_file}'):
+        os.remove(output_file)
+
     lines = sys.stdin.readlines()
     for line in lines:
         EOS_line = line.rstrip() + '</s>'

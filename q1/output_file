@@ -7,34 +7,6 @@ emiss_line_num=26
 \ init
 BOS 1.0
 
-\ emissions
-,   ,   1.0
-.   .   1.0
-CD   61   0.5
-CD   29   0.5
-DT   the   0.6666666666666666
-DT   a   0.3333333333333333
-IN   as   0.5
-IN   of   0.5
-JJ   old   0.5
-JJ   nonexecutive   0.5
-MD   will   1.0
-NN   board   0.25
-NN   director   0.25
-NN   chairman   0.25
-NN   group   0.25
-NNP   Pierre   0.125
-NNP   Vinken   0.25
-NNP   Nov.   0.125
-NNP   Mr.   0.125
-NNP   Elsevier   0.125
-NNP   N.V.   0.125
-NNP   Dutch   0.125
-NNS   years   1.0
-VB   join   1.0
-VBG   publishing   1.0
-VBZ   is   1.0
-
 \ transition
 NNP  NNP   0.375
 NNP  ,   0.25
@@ -62,4 +34,32 @@ IN  NNP   0.5
 .  </s>   1.0
 VBZ  NN   1.0
 VBG  NN   1.0
+
+\ emission
+,   ,   1.0
+.   .   1.0
+CD   61   0.5
+CD   29   0.5
+DT   the   0.6666666666666666
+DT   a   0.3333333333333333
+IN   as   0.5
+IN   of   0.5
+JJ   old   0.5
+JJ   nonexecutive   0.5
+MD   will   1.0
+NN   board   0.25
+NN   director   0.25
+NN   chairman   0.25
+NN   group   0.25
+NNP   Pierre   0.125
+NNP   Vinken   0.25
+NNP   Nov.   0.125
+NNP   Mr.   0.125
+NNP   Elsevier   0.125
+NNP   N.V.   0.125
+NNP   Dutch   0.125
+NNS   years   1.0
+VB   join   1.0
+VBG   publishing   1.0
+VBZ   is   1.0
 
