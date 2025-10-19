@@ -1,6 +1,21 @@
 
 STATE_DICT = {}
 
+def get_state_probs():
+    for key, bigram_map in STATE_DICT.items():
+        # print(f"bigram", bigram_map)
+        total_count = 0
+        for v in bigram_map.values():
+            total_count += int(v['count'])
+
+        for bigram in bigram_map:
+            count = STATE_DICT[key][bigram]['count']
+            prob = count/total_count
+            STATE_DICT[key][bigram]['prob'] = prob
+
+def create_emissions_dict(token):
+    print("hiiii")
+
 def create_state_dict(line):
     line.rstrip()
     split_line = line.rstrip().split(" ")
@@ -24,11 +39,11 @@ def create_state_dict(line):
             bigram = f"{w2_pos} {w3_pos}"
             if w1_pos in STATE_DICT:
                 if bigram in STATE_DICT[w1_pos]:
-                    STATE_DICT[w1_pos][bigram] +=1
+                    STATE_DICT[w1_pos][bigram]['count'] +=1
                 else:
-                    STATE_DICT[w1_pos][bigram] = 1
+                    STATE_DICT[w1_pos].update({bigram: {'count':1, 'prob': 'undefined'}})
             else:
-                STATE_DICT[w1_pos] = {bigram: 1}        
+                STATE_DICT[w1_pos] = {bigram: {'count': 1, 'prob': 'undefined'} }       
 
 def get_input():
     # TODO: change to take in info through cat
@@ -44,5 +59,6 @@ def get_input():
 
 def main():
     output_file = get_input()
+    get_state_probs()
     print(f"STATE {STATE_DICT}")
 main()
