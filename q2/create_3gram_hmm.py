@@ -8,6 +8,13 @@ def print_transmission_results():
         for bigram, value in bigram_map.items():
             print(f"{w1}    {bigram}    {value['prob']}")
 
+def print_emission_results():
+    print(f"\\ emissions")
+    for pos_token, values in POS_DICT.items():
+        # print(f"{pos_token} {values}")
+        for item in values:
+            print(f"ITEMMM {item}")
+
 def get_state_probs():
     for key, bigram_map in STATE_DICT.items():
         total_count = 0
@@ -18,6 +25,17 @@ def get_state_probs():
             count = STATE_DICT[key][bigram]['count']
             prob = count/total_count
             STATE_DICT[key][bigram]['prob'] = prob
+
+def get_emissions_probs():
+    for pos_token, entries in POS_DICT.items():
+        total_count = 0
+        for value in entries.values():
+            total_count += int(value['count'])
+        
+        for entry in entries:
+            entry_count = POS_DICT[pos_token][entry]['count']
+            prob = entry_count / total_count
+            POS_DICT[pos_token][entry]['prob'] = prob
 
 def create_emissions_dict(token):
     if token == "</s>":
@@ -30,11 +48,11 @@ def create_emissions_dict(token):
     
     if POS in POS_DICT:
         if word in POS_DICT[POS]:
-            POS_DICT[POS][word] +=1
+            POS_DICT[POS][word]['count'] +=1
         else:
-            POS_DICT[POS].update( {word: 1})
+            POS_DICT[POS][word] = {'count': 1, 'prob': 'undefined'}
     else:
-        POS_DICT[POS] = {word: 1}
+        POS_DICT[POS] = {word: {'count': 1, 'prob': 'undefined'}}
 
 def create_state_dict(line):
     line.rstrip()
@@ -81,7 +99,9 @@ def get_input():
 def main():
     output_file = get_input()
     get_state_probs()
-    print_transmission_results()
+    get_emissions_probs()
+    # print_transmission_results()
+    print_emission_results()
     # print(f"STATE {STATE_DICT}")
-    # print(f"POSSSS {POS_DICT}")
+    print(f"POSSSS {POS_DICT}")
 main()
