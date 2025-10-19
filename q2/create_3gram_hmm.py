@@ -1,6 +1,26 @@
 
 STATE_DICT = {}
 POS_DICT = {}
+TRANS_TOTAL = 0
+EMISS_LINE_NUM = 0
+
+# TODO: check these numbers, especially trans and emiss
+def print_meta_data():
+    state_num = len(STATE_DICT)
+    sym_num = len(POS_DICT)
+    init_line_num = 1
+    trans_line_num = TRANS_TOTAL
+    emiss_line_num = EMISS_LINE_NUM
+    print(f"state_num={state_num}")
+    print(f"sym_num={sym_num}")
+    print(f"init_line_num={init_line_num}")
+    print(f"trans_line_num={trans_line_num}")
+    print(f"emiss_line_num={emiss_line_num}")
+
+# TODO: make with real data
+def print_init_results():
+    print("\\ init")
+    print("BOS  1.0")
 
 def print_transmission_results():
     print(f"\\ transmission")
@@ -16,7 +36,9 @@ def print_emission_results():
 
 def get_state_probs():
     for key, bigram_map in STATE_DICT.items():
+        global TRANS_TOTAL
         total_count = 0
+        TRANS_TOTAL +=1
         for v in bigram_map.values():
             total_count += int(v['count'])
 
@@ -26,12 +48,14 @@ def get_state_probs():
             STATE_DICT[key][bigram]['prob'] = prob
 
 def get_emissions_probs():
+    global EMISS_LINE_NUM
     for pos_token, entries in POS_DICT.items():
         total_count = 0
         for value in entries.values():
             total_count += int(value['count'])
         
         for entry in entries:
+            EMISS_LINE_NUM +=1
             entry_count = POS_DICT[pos_token][entry]['count']
             prob = entry_count / total_count
             POS_DICT[pos_token][entry]['prob'] = prob
@@ -99,8 +123,9 @@ def main():
     output_file = get_input()
     get_state_probs()
     get_emissions_probs()
+    print_meta_data()
     # print_transmission_results()
-    print_emission_results()
+    # print_emission_results()
     # print(f"STATE {STATE_DICT}")
     # print(f"POSSSS {POS_DICT}")
 main()
